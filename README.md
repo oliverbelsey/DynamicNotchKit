@@ -42,9 +42,9 @@ This will result in a popover as so:
 
 <img src="media/demo.gif" width="50%"/>
 
-Furthermore, there is a `.floating` style, which will **automatically** be used on Macs without a notch:
+Furthermore, there is a `.glass` style, which will **automatically** be used on Macs without a notch:
 
-<img src="media/demo-floating.gif" width="50%"/>
+<img src="media/demo-glass.gif" width="50%"/>
 
 This is only a basic glimpse into this framework's capabilities. Documentation is available for **all** public methods and properties, so I encourage you to take a look at it for more advanced usage. Alternatively, you can take a look at the unit tests for this package, where I have added some usage examples as well.
 
