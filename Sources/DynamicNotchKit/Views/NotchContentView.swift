@@ -43,7 +43,7 @@ struct NotchContentView<Expanded, CompactLeading, CompactTrailing>: View where E
                 NotchView(dynamicNotch: dynamicNotch)
                     .foregroundStyle(.white)
             } else {
-                NotchlessView(dynamicNotch: dynamicNotch)
+                NotchView(dynamicNotch: dynamicNotch)
             }
         }
         .shadow(
