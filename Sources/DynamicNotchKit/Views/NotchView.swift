@@ -54,26 +54,45 @@ struct NotchView<Expanded, CompactLeading, CompactTrailing>: View where Expanded
     }
 
     var body: some View {
-        notchContent()
-            .background {
-                Rectangle()
-                    .foregroundStyle(.black)
-                    .padding(-50) // The opening/closing animation can overshoot, so this makes sure that it's still black
-            }
-            .mask {
-                NotchShape(
-                    topCornerRadius: topCornerRadius,
-                    bottomCornerRadius: bottomCornerRadius
-                )
-                .padding(.horizontal, 0.5)
-                .frame(
-                    width: dynamicNotch.state != .hidden ? nil : minWidth,
-                    height: dynamicNotch.state != .hidden ? nil : dynamicNotch.notchSize.height
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            }
-            .offset(x: xOffset)
-            .animation(.smooth, value: [compactLeadingWidth, compactTrailingWidth])
+        if dynamicNotch.style.isNotch {
+            notchContent()
+                .background {
+                    Rectangle()
+                        .foregroundStyle(.black)
+                        .padding(-50) // The opening/closing animation can overshoot, so this makes sure that it's still black
+                }
+                .mask {
+                    NotchShape(
+                        topCornerRadius: topCornerRadius,
+                        bottomCornerRadius: bottomCornerRadius
+                    )
+                    .padding(.horizontal, 0.5)
+                    .frame(
+                        width: dynamicNotch.state != .hidden ? nil : minWidth,
+                        height: dynamicNotch.state != .hidden ? nil : dynamicNotch.notchSize.height
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                }
+                .offset(x: xOffset)
+                .animation(.smooth, value: [compactLeadingWidth, compactTrailingWidth])
+        } else {
+            notchContent()
+                .applyTransparency(topCornerRadius: topCornerRadius, bottomCornerRadius: bottomCornerRadius)
+                .mask {
+                    NotchShape(
+                        topCornerRadius: topCornerRadius,
+                        bottomCornerRadius: bottomCornerRadius
+                    )
+                    .padding(.horizontal, 0.5)
+                    .frame(
+                        width: dynamicNotch.state != .hidden ? nil : minWidth,
+                        height: dynamicNotch.state != .hidden ? nil : dynamicNotch.notchSize.height
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                }
+                .offset(x: xOffset)
+                .animation(.smooth, value: [compactLeadingWidth, compactTrailingWidth])
+        }
     }
 
     private func notchContent() -> some View {
