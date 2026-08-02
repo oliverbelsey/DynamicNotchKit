@@ -158,16 +158,31 @@ struct NotchView<Expanded, CompactLeading, CompactTrailing>: View where Expanded
     }
 
     func expandedContent() -> some View {
-        HStack(spacing: 0) {
-            if dynamicNotch.state == .expanded {
-                dynamicNotch.expandedContent
-                    .transition(.blur(intensity: 10).combined(with: .scale(y: 0.6, anchor: .top)).combined(with: .opacity))
+        if dynamicNotch.style.isNotch {
+            HStack(spacing: 0) {
+                if dynamicNotch.state == .expanded {
+                    dynamicNotch.expandedContent
+                        .transition(.blur(intensity: 10).combined(with: .scale(y: 0.6, anchor: .top)).combined(with: .opacity))
+                }
             }
+            .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: dynamicNotch.notchSize.height) }
+            .safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
+            .safeAreaInset(edge: .leading, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .safeAreaInset(edge: .trailing, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .frame(minWidth: dynamicNotch.notchSize.width)
+        } else {
+            HStack(spacing: 0) {
+                if dynamicNotch.state == .expanded {
+                    dynamicNotch.expandedContent
+                        .transition(.blur(intensity: 10).combined(with: .scale(y: 0.6, anchor: .top)).combined(with: .opacity))
+                }
+            }
+            .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
+            .safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
+            .safeAreaInset(edge: .leading, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .safeAreaInset(edge: .trailing, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .frame(minWidth: dynamicNotch.notchSize.width)
+
         }
-        .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: dynamicNotch.notchSize.height) }
-        .safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
-        .safeAreaInset(edge: .leading, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
-        .safeAreaInset(edge: .trailing, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
-        .frame(minWidth: dynamicNotch.notchSize.width)
     }
 }

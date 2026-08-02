@@ -223,11 +223,6 @@ extension DynamicNotch {
     func _compact(on screen: NSScreen = NSScreen.screens[0], skipHide: Bool) async {
         guard state != .compact else { return }
 
-        if effectiveStyle(for: screen).isGlass {
-            await hide()
-            return
-        }
-
         if disableCompactLeading, disableCompactTrailing {
             await hide()
             return
