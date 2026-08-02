@@ -24,7 +24,7 @@ import SwiftUI
 /// ### Compact State
 /// In the compact state, there is the leading content, which is shown on the left side of the notch, and the trailing content, which is shown on the right side of the notch.
 ///
-/// > When using the `floating` style, this framework does not support compact mode.
+/// > When using the `glass` style, this framework does not support compact mode.
 /// > Calling ``compact(on:)`` on these devices will automatically hide the window.
 ///
 /// ## Usage
@@ -89,7 +89,7 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     /// Creates a new DynamicNotch with custom content and style.
     /// - Parameters:
     ///   - hoverBehavior: defines the hover behavior of the notch, which allows for different interactions such as haptic feedback, increased shadow etc.
-    ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or floating).
+    ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or glass).
     ///   - expanded: a SwiftUI View to be shown in the expanded state of the notch.
     ///   - compactLeading: a SwiftUI View to be shown in the compact leading state of the notch.
     ///   - compactTrailing: a SwiftUI View to be shown in the compact trailing state of the notch.
@@ -113,7 +113,7 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     /// Creates a new DynamicNotch with custom content and style. Does not support the compact appearance.
     /// - Parameters:
     ///   - hoverBehavior: defines the hover behavior of the notch, which allows for different interactions such as haptic feedback, increased shadow etc.
-    ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or floating).
+    ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or glass).
     ///   - expanded: a SwiftUI View to be shown in the expanded state of the notch.
     public convenience init(
         hoverBehavior: DynamicNotchHoverBehavior = [.keepVisible],
@@ -223,7 +223,7 @@ extension DynamicNotch {
     func _compact(on screen: NSScreen = NSScreen.screens[0], skipHide: Bool) async {
         guard state != .compact else { return }
 
-        if effectiveStyle(for: screen).isFloating {
+        if effectiveStyle(for: screen).isGlass {
             await hide()
             return
         }
@@ -339,7 +339,7 @@ private extension DynamicNotch {
     /// - Returns: the effective style for the screen.
     func effectiveStyle(for screen: NSScreen) -> DynamicNotchStyle {
         if style == .auto {
-            return screen.hasNotch ? .notch : .floating
+            return screen.hasNotch ? .notch : .glass
         }
         return style
     }

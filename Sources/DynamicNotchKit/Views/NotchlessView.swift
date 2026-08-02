@@ -17,7 +17,7 @@ struct NotchlessView<Expanded, CompactLeading, CompactTrailing>: View where Expa
     }
 
     private var cornerRadius: CGFloat {
-        if case let .floating(cornerRadius) = dynamicNotch.style {
+        if case let .glass(cornerRadius) = dynamicNotch.style {
             cornerRadius
         } else {
             20

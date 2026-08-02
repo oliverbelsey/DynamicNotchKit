@@ -22,3 +22,29 @@ struct VisualEffectView: NSViewRepresentable {
 
     func updateNSView(_: NSVisualEffectView, context _: Context) {}
 }
+
+extension View {
+    @ViewBuilder
+    func applyTransparency(topCornerRadius: CGFloat, bottomCornerRadius: CGFloat) -> some View {
+        if #available(macOS 26, *) {
+            self
+                .glassEffect(in: NotchShape(
+                    topCornerRadius: topCornerRadius,
+                    bottomCornerRadius: bottomCornerRadius
+                ))
+                
+        } else {
+            self
+                .background {
+                    VisualEffectView(material: .popover, blendingMode: .behindWindow)
+                        .overlay {
+                            NotchShape(
+                                topCornerRadius: topCornerRadius,
+                                bottomCornerRadius: bottomCornerRadius
+                            )
+                                .stroke(.quaternary, lineWidth: 1)
+                        }
+                }
+        }
+    }
+}
