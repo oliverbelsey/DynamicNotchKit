@@ -11,7 +11,7 @@ import SwiftUI
 ///
 /// The style determines how the notch appears on the screen.
 /// It is generally recommended to use the ``auto`` style, which will automatically choose the best style based on the screen size.
-/// However, you can also use the ``notch`` or ``floating`` styles to force the notch to appear in a specific way.
+/// However, you can also use the ``notch`` or ``glass`` styles to force the notch to appear in a specific way.
 ///
 /// ## Complex Usage
 ///
@@ -22,7 +22,7 @@ import SwiftUI
 /// ```
 /// In order to set a custom corner radius, use the following cases:
 /// - ``notch(topCornerRadius:bottomCornerRadius:)``
-/// - ``floating(cornerRadius:)``
+/// - ``glass(cornerRadius:)``
 ///
 public enum DynamicNotchStyle: Sendable {
     /// Notch-style, meant to be used on screens with a notch
@@ -33,8 +33,8 @@ public enum DynamicNotchStyle: Sendable {
         bottomCornerRadius: CGFloat
     )
 
-    /// Floating style, to be used on screens without a notch
-    case floating(
+    /// Glass style, to be used on screens without a notch
+    case glass(
         cornerRadius: CGFloat
     )
 
@@ -44,8 +44,8 @@ public enum DynamicNotchStyle: Sendable {
     /// A preset notch style, made to look good in most cases.
     public static let notch: DynamicNotchStyle = .notch(topCornerRadius: 15, bottomCornerRadius: 20)
 
-    /// A preset floating style, made to look good in most cases.
-    public static let floating: DynamicNotchStyle = .floating(cornerRadius: 20)
+    /// A preset glass style, made to look good in most cases.
+    public static let glass: DynamicNotchStyle = .glass(cornerRadius: 20)
 
     var isNotch: Bool {
         if case .notch = self {
@@ -55,8 +55,8 @@ public enum DynamicNotchStyle: Sendable {
         }
     }
 
-    var isFloating: Bool {
-        if case .floating = self {
+    var isGlass: Bool {
+        if case .glass = self {
             true
         } else {
             false
@@ -85,7 +85,7 @@ extension DynamicNotchStyle: Equatable {
         switch (lhs, rhs) {
         case let (.notch(lhsTop, lhsBottom), .notch(rhsTop, rhsBottom)):
             lhsTop == rhsTop && lhsBottom == rhsBottom
-        case let (.floating(lhsRadius), .floating(rhsRadius)):
+        case let (.glass(lhsRadius), .glass(rhsRadius)):
             lhsRadius == rhsRadius
         case (.auto, .auto):
             true
