@@ -22,7 +22,7 @@ import SwiftUI
 /// ```
 /// In order to set a custom corner radius, use the following cases:
 /// - ``notch(topCornerRadius:bottomCornerRadius:)``
-/// - ``glass(cornerRadius:)``
+/// - ``glass(topCornerRadius:bottomCornerRadius:)``
 ///
 public enum DynamicNotchStyle: Sendable {
     /// Notch-style, meant to be used on screens with a notch
@@ -35,7 +35,8 @@ public enum DynamicNotchStyle: Sendable {
 
     /// Glass style, to be used on screens without a notch
     case glass(
-        cornerRadius: CGFloat
+        topCornerRadius: CGFloat,
+        bottomCornerRadius: CGFloat
     )
 
     /// Automatically choose the style based on the screen
@@ -45,7 +46,7 @@ public enum DynamicNotchStyle: Sendable {
     public static let notch: DynamicNotchStyle = .notch(topCornerRadius: 15, bottomCornerRadius: 20)
 
     /// A preset glass style, made to look good in most cases.
-    public static let glass: DynamicNotchStyle = .glass(cornerRadius: 20)
+    public static let glass: DynamicNotchStyle = .glass(topCornerRadius: 15, bottomCornerRadius: 20)
 
     var isNotch: Bool {
         if case .notch = self {
@@ -85,8 +86,8 @@ extension DynamicNotchStyle: Equatable {
         switch (lhs, rhs) {
         case let (.notch(lhsTop, lhsBottom), .notch(rhsTop, rhsBottom)):
             lhsTop == rhsTop && lhsBottom == rhsBottom
-        case let (.glass(lhsRadius), .glass(rhsRadius)):
-            lhsRadius == rhsRadius
+        case let (.glass(lhsTop, lhsBottom), .glass(rhsTop, rhsBottom)):
+            lhsTop == rhsTop && lhsBottom == rhsBottom
         case (.auto, .auto):
             true
         default:
