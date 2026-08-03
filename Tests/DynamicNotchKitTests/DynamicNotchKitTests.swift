@@ -83,7 +83,7 @@ struct DynamicNotchKitTests {
         withAnimation {
             notch.icon = nil
             notch.title = "There's also a compact style like iOS!"
-            notch.description = "Note: this doesn't work in the glass style."
+            notch.description = "This now works in the glass style!"
         }
 
         try await Task.sleep(for: .seconds(4))
@@ -117,9 +117,9 @@ struct DynamicNotchKitTests {
         try await _dynamicNotchInfoGradientCustomRadii(with: .notch(topCornerRadius: 10, bottomCornerRadius: 25))
     }
 
-    @Test("Info - Custom glass style & gradient", .tags(.glassStyle), .disabled("Compact mode does not support glass windows"))
+    @Test("Info - Custom glass style & gradient", .tags(.glassStyle))
     func dynamicNotchInfoCustomGlassStyle() async throws {
-        try await _dynamicNotchInfoGradientCustomRadii(with: .glass(cornerRadius: 25))
+        try await _dynamicNotchInfoGradientCustomRadii(with: .glass(topCornerRadius: 10, bottomCornerRadius: 25))
     }
 
     func _dynamicNotchInfoGradientCustomRadii(with style: DynamicNotchStyle) async throws {
@@ -156,7 +156,7 @@ struct DynamicNotchKitTests {
         try await _testInfoWithAppIcon(with: .notch)
     }
 
-    @Test("Info - Glass with custom icon", .tags(.glassStyle), .disabled("Compact mode does not support glass windows"))
+    @Test("Info - Glass with custom icon", .tags(.glassStyle))
     func dynamicNotchInfoAppIconGlass() async throws {
         try await _testInfoWithAppIcon(with: .glass)
     }
@@ -181,9 +181,14 @@ struct DynamicNotchKitTests {
         await notch.hide()
     }
 
-    @Test("Info - Notch with changing compact icons", .tags(.notchStyle))
-    func dynamicNotchInfoCompactIcons() async throws {
+    @Test("Info - Notch with changing compact icons - Notch Style", .tags(.notchStyle))
+    func dynamicNotchInfoCompactIconsNotchStyle() async throws {
         try await _testDifferentCompactIcons(with: .notch)
+    }
+    
+    @Test("Info - Notch with changing compact icons - Glass Style", .tags(.glassStyle))
+    func dynamicNotchInfoCompactIconsGlassStyle() async throws {
+        try await _testDifferentCompactIcons(with: .glass)
     }
 
     func _testDifferentCompactIcons(with style: DynamicNotchStyle) async throws {
@@ -256,12 +261,22 @@ struct DynamicNotchKitTests {
         await notch.hide()
     }
 
-    @Test("DynamicNotch - Rapid Fire", .tags(.notchStyle))
-    func dynamicNotchRapidFire() async throws {
+    @Test("DynamicNotch - Rapid Fire - Notch style", .tags(.notchStyle))
+    func dynamicNotchRapidFireNotchStyle() async throws {
+        try await _dynamicNotchRapidFire(with: .notch)
+    }
+    
+    @Test("DynamicNothc - Rapid Fire - Glass style", .tags(.glassStyle))
+    func dynamicNotchRapidFireGlassStyle() async throws {
+        try await _dynamicNotchRapidFire(with: .glass)
+    }
+    
+    func _dynamicNotchRapidFire(with style: DynamicNotchStyle) async throws {
         for i in 0 ..< 30 {
             let notch = DynamicNotchInfo(
                 icon: .init(systemName: "gauge.with.dots.needle.100percent"),
-                title: "Rapid Fire Test \(i + 1)"
+                title: "Rapid Fire Test \(i + 1)",
+                style: style
             )
 
             await notch.expand()

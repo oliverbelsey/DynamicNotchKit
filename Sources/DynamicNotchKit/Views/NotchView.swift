@@ -54,26 +54,45 @@ struct NotchView<Expanded, CompactLeading, CompactTrailing>: View where Expanded
     }
 
     var body: some View {
-        notchContent()
-            .background {
-                Rectangle()
-                    .foregroundStyle(.black)
-                    .padding(-50) // The opening/closing animation can overshoot, so this makes sure that it's still black
-            }
-            .mask {
-                NotchShape(
-                    topCornerRadius: topCornerRadius,
-                    bottomCornerRadius: bottomCornerRadius
-                )
-                .padding(.horizontal, 0.5)
-                .frame(
-                    width: dynamicNotch.state != .hidden ? nil : minWidth,
-                    height: dynamicNotch.state != .hidden ? nil : dynamicNotch.notchSize.height
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            }
-            .offset(x: xOffset)
-            .animation(.smooth, value: [compactLeadingWidth, compactTrailingWidth])
+        if dynamicNotch.style.isNotch {
+            notchContent()
+                .background {
+                    Rectangle()
+                        .foregroundStyle(.black)
+                        .padding(-50) // The opening/closing animation can overshoot, so this makes sure that it's still black
+                }
+                .mask {
+                    NotchShape(
+                        topCornerRadius: topCornerRadius,
+                        bottomCornerRadius: bottomCornerRadius
+                    )
+                    .padding(.horizontal, 0.5)
+                    .frame(
+                        width: dynamicNotch.state != .hidden ? nil : minWidth,
+                        height: dynamicNotch.state != .hidden ? nil : dynamicNotch.notchSize.height
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                }
+                .offset(x: xOffset)
+                .animation(.smooth, value: [compactLeadingWidth, compactTrailingWidth])
+        } else {
+            notchContent()
+                .applyTransparency(topCornerRadius: topCornerRadius, bottomCornerRadius: bottomCornerRadius)
+                .mask {
+                    NotchShape(
+                        topCornerRadius: topCornerRadius,
+                        bottomCornerRadius: bottomCornerRadius
+                    )
+                    .padding(.horizontal, 0.5)
+                    .frame(
+                        width: dynamicNotch.state != .hidden ? nil : minWidth,
+                        height: dynamicNotch.state != .hidden ? nil : dynamicNotch.notchSize.height
+                    )
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                }
+                .offset(x: xOffset)
+                .animation(.smooth, value: [compactLeadingWidth, compactTrailingWidth])
+        }
     }
 
     private func notchContent() -> some View {
@@ -139,16 +158,31 @@ struct NotchView<Expanded, CompactLeading, CompactTrailing>: View where Expanded
     }
 
     func expandedContent() -> some View {
-        HStack(spacing: 0) {
-            if dynamicNotch.state == .expanded {
-                dynamicNotch.expandedContent
-                    .transition(.blur(intensity: 10).combined(with: .scale(y: 0.6, anchor: .top)).combined(with: .opacity))
+        if dynamicNotch.style.isNotch {
+            HStack(spacing: 0) {
+                if dynamicNotch.state == .expanded {
+                    dynamicNotch.expandedContent
+                        .transition(.blur(intensity: 10).combined(with: .scale(y: 0.6, anchor: .top)).combined(with: .opacity))
+                }
             }
+            .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: dynamicNotch.notchSize.height) }
+            .safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
+            .safeAreaInset(edge: .leading, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .safeAreaInset(edge: .trailing, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .frame(minWidth: dynamicNotch.notchSize.width)
+        } else {
+            HStack(spacing: 0) {
+                if dynamicNotch.state == .expanded {
+                    dynamicNotch.expandedContent
+                        .transition(.blur(intensity: 10).combined(with: .scale(y: 0.6, anchor: .top)).combined(with: .opacity))
+                }
+            }
+            .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
+            .safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
+            .safeAreaInset(edge: .leading, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .safeAreaInset(edge: .trailing, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
+            .frame(minWidth: dynamicNotch.notchSize.width)
+
         }
-        .safeAreaInset(edge: .top, spacing: 0) { Color.clear.frame(height: dynamicNotch.notchSize.height) }
-        .safeAreaInset(edge: .bottom, spacing: 0) { Color.clear.frame(height: safeAreaInset) }
-        .safeAreaInset(edge: .leading, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
-        .safeAreaInset(edge: .trailing, spacing: 0) { Color.clear.frame(width: safeAreaInset) }
-        .frame(minWidth: dynamicNotch.notchSize.width)
     }
 }
