@@ -119,7 +119,7 @@ struct DynamicNotchKitTests {
 
     @Test("Info - Custom glass style & gradient", .tags(.glassStyle))
     func dynamicNotchInfoCustomGlassStyle() async throws {
-        try await _dynamicNotchInfoGradientCustomRadii(with: .glass(cornerRadius: 25))
+        try await _dynamicNotchInfoGradientCustomRadii(with: .glass(topCornerRadius: 10, bottomCornerRadius: 25))
     }
 
     func _dynamicNotchInfoGradientCustomRadii(with style: DynamicNotchStyle) async throws {
