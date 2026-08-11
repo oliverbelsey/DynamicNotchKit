@@ -24,9 +24,6 @@ import SwiftUI
 /// ### Compact State
 /// In the compact state, there is the leading content, which is shown on the left side of the notch, and the trailing content, which is shown on the right side of the notch.
 ///
-/// > When using the `glass` style, this framework does not support compact mode.
-/// > Calling ``compact(on:)`` on these devices will automatically hide the window.
-///
 /// ## Usage
 ///
 /// ```swift
