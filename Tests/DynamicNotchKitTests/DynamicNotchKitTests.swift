@@ -266,7 +266,7 @@ struct DynamicNotchKitTests {
         try await _dynamicNotchRapidFire(with: .notch)
     }
     
-    @Test("DynamicNothc - Rapid Fire - Glass style", .tags(.glassStyle))
+    @Test("DynamicNotch - Rapid Fire - Glass style", .tags(.glassStyle))
     func dynamicNotchRapidFireGlassStyle() async throws {
         try await _dynamicNotchRapidFire(with: .glass)
     }
