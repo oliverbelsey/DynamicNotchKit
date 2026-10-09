@@ -61,6 +61,9 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
 
     /// Behavior of window when mouse enters.
     public let hoverBehavior: DynamicNotchHoverBehavior
+    
+    /// The minimum width, when not on a notched display
+    public let minimumWidth: CGFloat?
 
     /// Namespace for matched geometry effect. It is automatically generated if `nil` when the notch is first presented.
     @Published public internal(set) var namespace: Namespace.ID?
@@ -87,18 +90,21 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     /// - Parameters:
     ///   - hoverBehavior: defines the hover behavior of the notch, which allows for different interactions such as haptic feedback, increased shadow etc.
     ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or glass).
+    ///   - minimumWidth: the minimum width of the notch, when on a non notched display (default 300, has no effect when display has a notch)
     ///   - expanded: a SwiftUI View to be shown in the expanded state of the notch.
     ///   - compactLeading: a SwiftUI View to be shown in the compact leading state of the notch.
     ///   - compactTrailing: a SwiftUI View to be shown in the compact trailing state of the notch.
     public init(
         hoverBehavior: DynamicNotchHoverBehavior = .all,
         style: DynamicNotchStyle = .auto,
+        minimumWidth: CGFloat? = nil,
         @ViewBuilder expanded: @escaping () -> Expanded,
         @ViewBuilder compactLeading: @escaping () -> CompactLeading = { EmptyView() },
         @ViewBuilder compactTrailing: @escaping () -> CompactTrailing = { EmptyView() }
     ) {
         self.hoverBehavior = hoverBehavior
         self.style = style
+        self.minimumWidth = minimumWidth
 
         self.expandedContent = expanded()
         self.compactLeadingContent = compactLeading()
@@ -115,11 +121,13 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     public convenience init(
         hoverBehavior: DynamicNotchHoverBehavior = [.keepVisible],
         style: DynamicNotchStyle = .auto,
+        minimumWidth: CGFloat? = nil,
         @ViewBuilder expanded: @escaping () -> Expanded
     ) where CompactLeading == EmptyView, CompactTrailing == EmptyView {
         self.init(
             hoverBehavior: hoverBehavior,
             style: style,
+            minimumWidth: minimumWidth,
             expanded: expanded,
             compactLeading: { EmptyView() },
             compactTrailing: { EmptyView() }
@@ -344,6 +352,10 @@ private extension DynamicNotch {
         deinitializeWindow()
 
         notchSize = screen.notchFrameWithMenubarAsBackup.size
+        if !screen.hasNotch {
+            notchSize.width = minimumWidth ?? 300
+        }
+        
         menubarHeight = screen.menubarHeight
 
         let style = effectiveStyle(for: screen)

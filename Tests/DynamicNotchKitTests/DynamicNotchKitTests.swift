@@ -65,7 +65,8 @@ struct DynamicNotchKitTests {
             icon: .init(systemName: "info.circle"),
             title: "`DynamicNotchInfo`: advanced usage",
             description: "More than just images!",
-            style: style
+            style: style,
+            minimumWidth: 100
         )
 
         await notch.expand()
@@ -83,7 +84,7 @@ struct DynamicNotchKitTests {
         withAnimation {
             notch.icon = nil
             notch.title = "There's also a compact style like iOS!"
-            notch.description = "This now works in the glass style!"
+            notch.description = "This has changeable width on non notched displays!"
         }
 
         try await Task.sleep(for: .seconds(4))
