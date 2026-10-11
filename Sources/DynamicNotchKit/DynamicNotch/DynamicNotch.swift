@@ -62,7 +62,7 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     /// Behavior of window when mouse enters.
     public let hoverBehavior: DynamicNotchHoverBehavior
     
-    /// The minimum width, when not on a notched display
+    /// The minimum width, when not on a notched display. Defaults to 300
     public let minimumWidth: CGFloat?
 
     /// Namespace for matched geometry effect. It is automatically generated if `nil` when the notch is first presented.
@@ -90,7 +90,7 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     /// - Parameters:
     ///   - hoverBehavior: defines the hover behavior of the notch, which allows for different interactions such as haptic feedback, increased shadow etc.
     ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or glass).
-    ///   - minimumWidth: the minimum width of the notch, when on a non notched display (default 300, has no effect when display has a notch)
+    ///   - minimumWidth: the minimum width of the notch (has no effect when display has a notch). Defaults to 300
     ///   - expanded: a SwiftUI View to be shown in the expanded state of the notch.
     ///   - compactLeading: a SwiftUI View to be shown in the compact leading state of the notch.
     ///   - compactTrailing: a SwiftUI View to be shown in the compact trailing state of the notch.
@@ -117,6 +117,7 @@ public final class DynamicNotch<Expanded, CompactLeading, CompactTrailing>: Obse
     /// - Parameters:
     ///   - hoverBehavior: defines the hover behavior of the notch, which allows for different interactions such as haptic feedback, increased shadow etc.
     ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or glass).
+    ///   - minimumWidth: the minimum width of the notch (has no effect when display has a notch). Defaults to 300
     ///   - expanded: a SwiftUI View to be shown in the expanded state of the notch.
     public convenience init(
         hoverBehavior: DynamicNotchHoverBehavior = [.keepVisible],
