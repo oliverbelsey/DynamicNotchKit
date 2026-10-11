@@ -34,6 +34,9 @@ public enum DynamicNotchStyle: Sendable {
     )
 
     /// Glass style, to be used on screens without a notch
+    ///
+    /// Note that `topCornerRadius` and `bottomCornerRadius` are only use when the notch is in the expanded state.
+
     case glass(
         topCornerRadius: CGFloat,
         bottomCornerRadius: CGFloat

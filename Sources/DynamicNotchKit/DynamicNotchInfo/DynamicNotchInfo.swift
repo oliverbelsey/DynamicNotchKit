@@ -70,7 +70,7 @@ public final class DynamicNotchInfo: ObservableObject, DynamicNotchControllable 
     ///   - compactTrailing: the icon to display in the compact trailing state of the notch. If unspecified, no icon will be displayed.
     ///   - hoverBehavior: the hover behavior of the notch, which allows for different interactions such as haptic feedback, increased shadow etc.
     ///   - style: the popover's style. If unspecified, the style will be automatically set according to the screen (notch or glass).
-    ///   - minimumWidth: the minimum width of the notch, when on a non notched display (default 300, has no effect when display has a notch)
+    ///   - minimumWidth: the minimum width of the notch (has no effect when display has a notch). Defaults to 300
 
     public init(
         icon: DynamicNotchInfo.Label?,
